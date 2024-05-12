@@ -29,6 +29,8 @@ class SortedMap {
 
 		static const int INITIAL_CAPACITY = 13;
 
+		void resize();
+
 		int hash(TKey c) const {
 			return std::abs(c) % capacity;
 		}

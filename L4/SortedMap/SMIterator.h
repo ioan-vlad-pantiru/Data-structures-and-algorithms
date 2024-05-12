@@ -6,9 +6,17 @@ class SMIterator{
 	friend class SortedMap;
 private:
 	const SortedMap& map;
+	TElem* elements;
+	int capacity;
+	int size;
+	int current;
 	SMIterator(const SortedMap& mapionar);
 
-	//TODO - Representation
+	void resize();
+	int partition(int, int);
+	void quickSort(int, int);
+	void sortElemets();
+	void collectElements();
 
 public:
 	void first();
