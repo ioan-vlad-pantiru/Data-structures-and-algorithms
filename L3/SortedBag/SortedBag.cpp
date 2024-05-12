@@ -159,6 +159,41 @@ bool SortedBag::isEmpty() const {
 	return sizeOfBag == 0;
 }
 
+int SortedBag::removeOccurrences(int nr, TComp e){
+	int currentNode = head;
+	int prevNode = -1;
+	int removed = 0;
+
+	if(nr < 0){
+		throw std::exception();
+	}
+
+	while(currentNode != -1 && removed < nr){
+		if(elements[currentNode].first == e){
+			elements[currentNode].second--;
+			removed++;
+			if(elements[currentNode].second == 0){
+				if(prevNode == -1){
+					head = next[currentNode];
+				} else {
+					next[prevNode] = next[currentNode];
+				}
+				next[currentNode] = firstEmpty;
+				firstEmpty = currentNode;
+			}
+		}
+
+		if(elements[currentNode].first != e || elements[currentNode].second == 0){
+			prevNode = currentNode;
+			currentNode = next[currentNode];
+		}
+	}
+
+	sizeOfBag -= removed;
+
+	return removed;
+}
+
 
 SortedBagIterator SortedBag::iterator() const {
 	return SortedBagIterator(*this);

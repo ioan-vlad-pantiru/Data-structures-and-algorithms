@@ -30,6 +30,10 @@ void testAll() {
 	assert(sb.search(6) == true);
 	assert(sb.isEmpty() == false);
 
+	std::cout << sb.nrOccurrences(6) << std::endl;
+	assert(sb.removeOccurrences(1, 6) == 1);
+	assert(sb.size() == 4);
+
 	SortedBagIterator it = sb.iterator();
 	assert(it.valid() == true);
 	while (it.valid()) {

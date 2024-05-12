@@ -24,12 +24,16 @@ private:
 	int sizeOfBag;
 	Relation relation;
 
-
 	void resize();
 
 public:
 	//constructor
 	SortedBag(Relation r);
+
+	//removes nr occurrences of elem. If the element appears less than nr times, all occurrences will be removed. 
+	//returns the number of times the element was removed.
+	//throws an exception if nr is negative
+	int removeOccurrences(int nr, TComp e);
 
 	//adds an element to the sorted bag
 	void add(TComp e);
