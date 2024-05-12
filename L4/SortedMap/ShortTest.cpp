@@ -4,6 +4,7 @@
 #include "SMIterator.h"
 #include "ShortTest.h"
 #include <exception>
+#include <iostream>
 using namespace std;
 
 bool relatie1(TKey cheie1, TKey cheie2) {
@@ -28,7 +29,7 @@ void testAll(){
     assert(sm.search(1) == 3);
     SMIterator it = sm.iterator();
     it.first();
-    while (it.valid()){
+    while (it.valid()){    cout << "Short test" << endl;
     	TElem e = it.getCurrent();
     	assert(e.second != NULL_TVALUE);
     	it.next();

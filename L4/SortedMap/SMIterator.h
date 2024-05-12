@@ -15,10 +15,12 @@ private:
 	void resize();
 	int partition(int, int);
 	void quickSort(int, int);
-	void sortElemets();
 	void collectElements();
 
 public:
+	~SMIterator() {
+		delete[] elements;
+	}
 	void first();
 	void next();
 	bool valid() const;

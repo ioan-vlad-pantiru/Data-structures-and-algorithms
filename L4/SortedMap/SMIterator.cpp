@@ -1,6 +1,9 @@
 #include "SMIterator.h"
 #include "SortedMap.h"
 #include <exception>
+#include <stdexcept>
+#include <iostream>
+#include <utility>
 
 using namespace std;
 
@@ -37,32 +40,46 @@ void SMIterator::quickSort(int low, int high) {
 	}
 }
 
-void SMIterator::collectElements()
+void SMIterator::collectElements() {
+	size = 0;
+	for (int i = 0; i < map.capacity; i++){
+		SortedMap::Node* node = map.hashTable[i];
+		while(node != nullptr) {
+			if(size == capacity) {
+				resize();
+			}
 
-void SMIterator::sortElemets() {
-	
+			elements[size++] = node->elem;
+			node = node->next;
+		}
+	}
+	quickSort(0, size - 1);
 }
 
 SMIterator::SMIterator(const SortedMap& m) : map(m), elements(new TElem[10]), capacity(10), size(0), current(0){
-	
+	collectElements();
 }
 
 void SMIterator::first(){
-	//TODO - Implementation
+	current = 0;
 }
 
 void SMIterator::next(){
-	//TODO - Implementation
+	if (current >= size) {
+		throw std::out_of_range("Iterator out of range");
+	}
+	current++;
 }
 
 bool SMIterator::valid() const{
-	//TODO - Implementation
-	return false;
+	return current < size && current >= 0;
 }
 
 TElem SMIterator::getCurrent() const{
-	//TODO - Implementation
-	return NULL_TPAIR;
+	if (!valid()) {
+		throw std::out_of_range("Iterator out of range");
+	}
+	return elements[current];
 }
 
 

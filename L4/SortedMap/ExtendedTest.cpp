@@ -36,6 +36,7 @@ void testIteratorSteps(SortedMap& m, Relation r) {
 	}
 	while (li.valid()) {
 		TElem elem2 = li.getCurrent();
+		std::cout << elem.first << " " << elem2.first << std::endl;
 		assert(r(elem.first, elem2.first));
 		elem = elem2;
 		count++;
