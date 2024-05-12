@@ -22,7 +22,7 @@ int SMIterator::partition(int low, int high) {
 	int i = (low - 1);
 
 	for(int j = low; j <= high -1; j++){
-		if(map.rel(pivot.first, elements[j].first)) {
+		if(map.rel(elements[j].first, pivot.first)) {
 			i++;
 			std::swap(elements[i], elements[j]);
 		}
@@ -56,7 +56,7 @@ void SMIterator::collectElements() {
 	quickSort(0, size - 1);
 }
 
-SMIterator::SMIterator(const SortedMap& m) : map(m), elements(new TElem[10]), capacity(10), size(0), current(0){
+SMIterator::SMIterator(const SortedMap& m) : map(m), elements(new TElem[100]), capacity(100), size(0), current(0){
 	collectElements();
 }
 

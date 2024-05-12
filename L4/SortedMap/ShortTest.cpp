@@ -29,7 +29,7 @@ void testAll(){
     assert(sm.search(1) == 3);
     SMIterator it = sm.iterator();
     it.first();
-    while (it.valid()){    cout << "Short test" << endl;
+    while (it.valid()){
     	TElem e = it.getCurrent();
     	assert(e.second != NULL_TVALUE);
     	it.next();
