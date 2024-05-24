@@ -27,6 +27,7 @@ SortedMap::SortedMap(Relation r) : rel(r), capacity(INITIAL_CAPACITY), _size(0){
 }
 
 TValue SortedMap::add(TKey k, TValue v) {
+	//O(n)
 	if (_size > capacity * 0.75){
 		resize();
 	}
@@ -57,6 +58,7 @@ TValue SortedMap::add(TKey k, TValue v) {
 }
 
 TValue SortedMap::search(TKey k) const {
+	//O(n)
 	int index = hash(k);
 	Node* current = hashTable[index];
 
@@ -71,6 +73,7 @@ TValue SortedMap::search(TKey k) const {
 }
 
 TValue SortedMap::remove(TKey k) {
+	//O(n)
 	int index = hash(k);
 	Node* current = hashTable[index];
 	Node* prev = nullptr;
@@ -98,11 +101,45 @@ TValue SortedMap::remove(TKey k) {
 }
 
 int SortedMap::size() const {
+	//O(1)
 	return _size;
 }
 
 bool SortedMap::isEmpty() const {
+	//O(1)
 	return _size == 0;
+}
+
+int SortedMap::getValueRange() const {
+	//Best case: O(1)
+	//Worst case: O(n)
+	//Average case: O(n)
+    if (_size == 0) {
+        return -1;
+    }
+
+    bool isInitialized = false;
+    TValue minValue, maxValue;
+
+    for (int i = 0; i < capacity; i++) {
+        Node* current = hashTable[i];
+        while (current != nullptr) {
+            if (!isInitialized) {
+                minValue = maxValue = current->elem.second;
+                isInitialized = true;
+            } else {
+                if (current->elem.second < minValue) {
+                    minValue = current->elem.second;
+                }
+                if (current->elem.second > maxValue) {
+                    maxValue = current->elem.second;
+                }
+            }
+            current = current->next;
+        }
+    }
+
+    return maxValue - minValue;
 }
 
 SMIterator SortedMap::iterator() const {

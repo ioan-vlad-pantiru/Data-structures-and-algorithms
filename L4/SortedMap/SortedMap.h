@@ -34,9 +34,13 @@ class SortedMap {
 		int hash(TKey c) const {
 			return std::abs(c) % capacity;
 		}
+
+		
 		
     public:
 
+	int getValueRange() const;
+	
     // implicit constructor
     SortedMap(Relation r);
 
