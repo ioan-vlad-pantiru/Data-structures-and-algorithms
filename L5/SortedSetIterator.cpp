@@ -41,6 +41,17 @@ bool SortedSetIterator::valid() const {
     return currentNode < numberOfNodes;
 }
 
+void SortedSetIterator::jumpForward(int k) {
+    if (!valid() || k <= 0) {
+        throw std::exception();
+    }
+
+    currentNode += k;
+    if (currentNode >= numberOfNodes) {
+        currentNode = numberOfNodes;
+    }
+}
+
 SortedSetIterator::~SortedSetIterator() {
     delete[] nodes;
 }

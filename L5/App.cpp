@@ -8,6 +8,7 @@ using namespace std;
 
 int main() {
 	testAll();
+	testJumpForward();
 	testAllExtended();
 
 	cout << "Test end" << endl;

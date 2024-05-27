@@ -21,6 +21,8 @@ public:
 	TElem getCurrent();
 	bool valid() const;
 
+	void jumpForward(int k);
+
 	~SortedSetIterator();	
 };
 

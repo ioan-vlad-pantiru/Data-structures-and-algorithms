@@ -2,6 +2,7 @@
 #include "SortedSet.h"
 #include "SortedSetIterator.h"
 #include <assert.h>
+#include <exception>
 
 bool r2(TComp e1, TComp e2) {
 	if (e1 <= e2) {
@@ -68,5 +69,26 @@ void testAll() {
 	}
 	assert((vverif[0] == -3) && (vverif[1] == 5) && (vverif[2] == 7) && (vverif[3] == 10));
 
+}
+
+void testJumpForward() {
+    SortedSet s(r2);
+    assert(s.add(5) == true);
+    assert(s.add(1) == true);
+    assert(s.add(10) == true);
+    assert(s.add(7) == true);
+    assert(s.add(-3) == true);
+
+    SortedSetIterator it = s.iterator();
+
+    // Normal jump forward
+    it.first();
+    assert(it.getCurrent() == -3);
+    it.jumpForward(2);
+    assert(it.getCurrent() == 5);
+
+    // Jump to the end
+    it.jumpForward(2);
+    assert(it.getCurrent() == 10);
 }
 
