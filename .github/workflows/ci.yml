@@ -1,0 +1,47 @@
+
+# FILENAME: .github/workflows/ci.yml
+name: CI Pipeline
+on: [push, pull_request]
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # ENVIRONMENT SETUP
+    - name: Setup C++ environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ make cmake # Install necessary build tools
+
+    # DEPENDENCY CACHING
+    - name: Create Build Directory
+      run: mkdir build
+
+    # LINTING STAGE
+    - name: Configure Clang-Tidy (auto-configure)
+      run: |
+        sudo apt-get install -y clang-tidy # Install clang-tidy if not present.  Could improve this to check for existence first.
+        mkdir -p config/clang-tidy
+
+    - name: Run Linter
+      run: |
+        # Attempt to lint all .cpp files using Clang-Tidy. May require adjustment based on project specifics.
+        find . -name "*.cpp" -print0 | xargs -0 clang-tidy --check-each-line --fix-errors
+      # QUALITY GATE: Fails on style violations if Clang-Tidy finds errors
+
+    # BUILD STAGE
+    - name: Build project using CMake
+      run: |
+        cd build
+        cmake ..
+        make -j$(nproc) # Use parallel building to speed up the process
+      # QUALITY GATE: Fails on compilation errors. Multi module support handled by cmake in root directory
+
+    # TEST STAGE
+    - name: Run tests (Placeholder - No test commands provided)
+      run: echo "No test commands were given, so no tests will be run."
+      # QUALITY GATE: Needs implementation for actual testing
