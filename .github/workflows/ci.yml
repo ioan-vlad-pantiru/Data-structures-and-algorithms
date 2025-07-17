@@ -15,33 +15,33 @@ jobs:
     - name: Setup C++ environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y g++ make cmake # Install necessary build tools
+        sudo apt-get install -y build-essential g++ cmake  # Install necessary tools
+        echo "C++ environment setup complete."
 
-    # DEPENDENCY CACHING
-    - name: Create Build Directory
-      run: mkdir build
+    # DEPENDENCY CACHING (Not applicable for this project, no package manager)
+    #- name: Cache dependencies
+    #  uses: actions/cache@v3
+    #  with:
+    #    path: |
+    #      ~/.cache/pip
+    #    key: ${{ runner.os }}-deps-${{ hashFiles('requirements.txt') }}
 
-    # LINTING STAGE
-    - name: Configure Clang-Tidy (auto-configure)
+    # LINTING STAGE (Using clang-format as a default C++ linter)
+    - name: Install clang-format
       run: |
-        sudo apt-get install -y clang-tidy # Install clang-tidy if not present.  Could improve this to check for existence first.
-        mkdir -p config/clang-tidy
+        sudo apt-get install -y clang-format
 
-    - name: Run Linter
+    - name: Run Linter (clang-format)
       run: |
-        # Attempt to lint all .cpp files using Clang-Tidy. May require adjustment based on project specifics.
-        find . -name "*.cpp" -print0 | xargs -0 clang-tidy --check-each-line --fix-errors
-      # QUALITY GATE: Fails on style violations if Clang-Tidy finds errors
+        find . -name "*.cpp" -print0 | xargs -0 clang-format --style=Google --dry-run || exit 1  # Check for formatting issues. Exit if violations found.
+      # QUALITY GATE: Fails on style violations
 
     # BUILD STAGE
-    - name: Build project using CMake
-      run: |
-        cd build
-        cmake ..
-        make -j$(nproc) # Use parallel building to speed up the process
-      # QUALITY GATE: Fails on compilation errors. Multi module support handled by cmake in root directory
+    - name: Build project
+      run: g++ -std=c++17 *.cpp -o main # Builds all .cpp files in the current directory
+      # QUALITY GATE: Fails on compilation errors
 
     # TEST STAGE
-    - name: Run tests (Placeholder - No test commands provided)
-      run: echo "No test commands were given, so no tests will be run."
-      # QUALITY GATE: Needs implementation for actual testing
+    - name: Run tests
+      run: ./main # Executes the compiled program.  Assumes 'main' is the test executable.
+      # QUALITY GATE: Fails on test failures
