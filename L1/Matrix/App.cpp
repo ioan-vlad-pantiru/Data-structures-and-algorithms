@@ -9,7 +9,7 @@ using namespace std;
 
 int main() {
 
-//Added a comment
+//Added a comment plus
 	testAll();
 	testAllExtended();
 	cout << "Test End" << endl;
